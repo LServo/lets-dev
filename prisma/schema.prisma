@@ -1,0 +1,29 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./database.sqlite"
+}
+
+// CRUD - Create, Read, Update and Delete
+
+model User {
+  id String @id @default(uuid()) //universal unique identifier
+
+  name     String
+  email    String @unique
+  password String
+
+  birthDate  DateTime?
+  cellNumber Int?      @unique
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@map("user")
+}
