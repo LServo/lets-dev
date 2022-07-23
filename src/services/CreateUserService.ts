@@ -1,16 +1,16 @@
 import { UserEntity } from "../database/entities/UserEntity";
-import { UserRepository } from "../database/repositories/UsersRepository";
+import { UsersRepository } from "../database/repositories/UsersRepository";
 import {hash} from "bcrypt"
 import { AppError } from "../shared/errors";
 
-type CreateUserDTO ={
+type TCreateUser ={
     userData: UserEntity;
 }
 
 class CreateUserService{
-    async execute({ userData }: CreateUserDTO): Promise<UserEntity>{
+    async execute({ userData }: TCreateUser): Promise<UserEntity>{
         const { email, password } = userData;
-        const usersRepository = new UserRepository();
+        const usersRepository = new UsersRepository();
 
         const userConflict = await usersRepository.findByEmail({email});
 
