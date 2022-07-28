@@ -3,7 +3,7 @@ import { ReadProfileService } from "../services/ReadProfileService";
 
 class ReadProfileController {
     async control(request: Request, response: Response): Promise<Response> {
-        const { id } = request.user;
+        const { id } = request.body as unknown as { id: string } || request.user as unknown as { id: string };
 
         const readProfileService = new ReadProfileService();
 

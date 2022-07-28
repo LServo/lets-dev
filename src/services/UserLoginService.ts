@@ -1,5 +1,6 @@
 import { compare } from "bcrypt";
 import { sign } from "jsonwebtoken";
+import { TokensRepository } from "../database/repositories/TokensRepository";
 import { UsersRepository } from "../database/repositories/UsersRepository";
 import auth from "../settings/auth";
 import { AppError } from "../shared/errors";
@@ -36,6 +37,21 @@ class UserLoginService {
         if (!newToken) {
             throw new AppError("Login failed, contact support for more details", 401);
         }
+
+        const tokensRepository = new TokensRepository();
+
+        const tokenConflict = await tokensRepository.findByUserId({ userId: userAlreadyExists.id })
+
+        if (tokenConflict) {
+            await tokensRepository.delete({ userId: userAlreadyExists.id })
+        }
+
+        await tokensRepository.create({
+            tokenData: {
+                userId: userAlreadyExists.id,
+                token: newToken
+            }
+        });
 
         return { newToken };
     }

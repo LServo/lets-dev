@@ -72,6 +72,24 @@ class UsersRepository{
         })
     }
 
+    async findAll(): Promise<Partial<UserEntity>[]> {
+        const getAllUsers = await prisma.user.findMany({
+            select: {
+                id: true,
+                name: true,
+                email: true,
+                password: false,
+                isAdmin: true,
+                birthDate: true,
+                cellNumber: true,
+                created_at: true,
+                updated_at: true
+            }
+        });
+
+        return getAllUsers;
+    }
+
 }
 
 export { UsersRepository }

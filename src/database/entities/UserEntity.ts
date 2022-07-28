@@ -4,6 +4,7 @@ class UserEntity implements User {
     readonly id: string;
     name: string;
     email: string;
+    isAdmin: boolean;
     password: string;
     birthDate: Date;
     cellNumber: string;

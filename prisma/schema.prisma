@@ -13,10 +13,12 @@ datasource db {
 // CRUD - Create, Read, Update and Delete
 
 model User {
-  id String @id @default(uuid()) //universal unique identifier
+  id    String  @id @default(uuid()) //universal unique identifier
+  token Tokens?
 
   name     String
-  email    String @unique
+  email    String  @unique
+  isAdmin  Boolean @default(false)
   password String
 
   birthDate  DateTime?
@@ -26,4 +28,17 @@ model User {
   updated_at DateTime @updatedAt
 
   @@map("user")
+}
+
+model Tokens {
+  id     String @id @default(uuid())
+  user   User   @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  userId String @unique
+
+  token String
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@map("tokens")
 }
