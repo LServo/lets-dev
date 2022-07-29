@@ -1,0 +1,340 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+        "title": "Let's Dev",
+        "description": "API desenvolvida no Let's Dev 2.0!",
+        "contact": {
+            "email": "l.servo@hotmail.com"
+        },
+        "version": "0.1.0"
+    },
+    "externalDocs": {
+        "description": "Veja nosso conteúdo do Notion!",
+        "url": "https://paipe.notion.site/Conte-do-Let-s-Dev-17b49ef999b04a45a5cdd0f29d6e5d6b"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:9000/",
+            "description": "Servidor Local"
+        }
+    ],
+    "tags": [
+        {
+            "name": "Usuário",
+            "description": "Operações sobre Usuários"
+        },
+        {
+            "name": "Sessão",
+            "description": "Operações sobre sessões de Usuários"
+        }
+    ],
+    "paths": {
+        "/users/create": {
+            "post": {
+                "tags": [
+                    "Usuário"
+                ],
+                "summary": "Criar novo Usuário",
+                "operationId": "createUser",
+                "requestBody": {
+                    "description": "Criar um objeto de usuário",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/createUser"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Objeto criado com sucesso!!!",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/user"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Conflito, usuário já existe!",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User already exists"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/read": {
+            "get": {
+                "tags": [
+                    "Usuário"
+                ],
+                "summary": "Ler perfil de Usuário",
+                "operationId": "readUser"
+            }
+        },
+        "/users/update": {
+            "put": {
+                "tags": [
+                    "Usuário"
+                ],
+                "summary": "Alterar perfil de Usuário",
+                "operationId": "updateUser"
+            }
+        },
+        "/users/delete": {
+            "delete": {
+                "tags": [
+                    "Usuário"
+                ],
+                "summary": "Deletar PERMANENTEMENTE um Usuário",
+                "operationId": "deleteUser",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "x-users-id",
+                        "description": "Id's de usuários separados por ', '",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Objeto deletado com sucesso"
+                    },
+                    "401": {
+                        "description": "Token inválido",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Invalid Token"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Usuário não encontrado!",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User not found!"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/users/all": {
+            "get": {
+                "tags": [
+                    "Usuário"
+                ],
+                "summary": "Ler todos os perfis de Usuários",
+                "operationId": "allUsers"
+            }
+        },
+        "/sessions/login": {
+            "post": {
+                "tags": [
+                    "Sessão"
+                ],
+                "summary": "Gerar novo Token de acesso para um Usuário",
+                "operationId": "userLogin",
+                "requestBody": {
+                    "description": "Autenticar usuário na plataforma",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/login"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Usuário autenticado com sucesso!!!!",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/token"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Conflito, usuário já existe!",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Incorrect Email or Password!"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/sessions/logout": {
+            "delete": {
+                "tags": [
+                    "Sessão"
+                ],
+                "summary": "Deletar Token de acesso de um Usuário",
+                "operationId": "userLogout"
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "user": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "example": "3245d3d7-6470-4951-b58b-d86b03dd653c"
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Guilherme"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email"
+                    },
+                    "isAdmin": {
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "password": {
+                        "type": "string",
+                        "example": "minhasenha123"
+                    },
+                    "birthDate": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "cellNumber": {
+                        "type": "string",
+                        "example": "75988893409"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                }
+            },
+            "createUser": {
+                "type": "object",
+                "minProperties": 4,
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "example": "Guilherme"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email"
+                    },
+                    "isAdmin": {
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "password": {
+                        "type": "string",
+                        "example": "minhasenha123"
+                    },
+                    "birthDate": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "cellNumber": {
+                        "type": "string",
+                        "example": "75988893409"
+                    }
+                },
+                "required": [
+                    "name",
+                    "email",
+                    "isAdmin",
+                    "password"
+                ]
+            },
+            "login": {
+                "type": "object",
+                "minProperties": 2,
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "format": "email"
+                    },
+                    "password": {
+                        "type": "string",
+                        "example": "minhasenha123"
+                    }
+                },
+                "required": [
+                    "email",
+                    "password"
+                ]
+            },
+            "token": {
+                "type": "object",
+                "minProperties": 1,
+                "properties": {
+                    "newToken": {
+                        "type": "string",
+                        "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXJAZXhhbXBsZS5jb20iLCJpYXQiOjE2NTkwNTE2MDAsImV4cCI6MTY1OTEzODAwMCwic3ViIjoiYzRlNjhhMGUtMmI3OS00ODJmLTg2MmUtOTA5ZDNjOWU4NTc5In0.0EUuE8Jm-cInzlBQQMI09TjJHoy0fZ5zDWefVQPNk98"
+                    }
+                }
+            }
+        },
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        }
+    }
+}

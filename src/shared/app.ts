@@ -1,5 +1,7 @@
 import "dotenv/config";
 import "express-async-errors";
+import swaggerUi from "swagger-ui-express";
+import swaggerDocument from "./swagger.json"
 import cors from "cors";
 import express, { NextFunction, Request, Response } from "express";
 import { router } from "./routes";
@@ -10,6 +12,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use(router);
 
 app.use((err: Error, _request: Request, response: Response, _next: NextFunction) => {

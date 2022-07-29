@@ -19,11 +19,11 @@ const userLoginController = new UserLoginController();
 const readAllUsersController = new ReadAllUsersController();
 
 router.post("/users/create", createUserController.control);
-router.post("/sessions/login", userLoginController.control);
-router.put("/users/update", authSecurity, updateUserController.control);
 router.get("/users/read", authSecurity, readProfileController.control);
+router.put("/users/update", authSecurity, updateUserController.control);
 router.delete("/users/delete", authSecurity, deleteUserController.control);
-router.delete("/sessions/logout", authSecurity, userLogoutController.control)
 router.get("/users/all", authSecurity, readAllUsersController.control);
+router.post("/sessions/login", userLoginController.control);
+router.delete("/sessions/logout", authSecurity, userLogoutController.control)
 
 export { router }
